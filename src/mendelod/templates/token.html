@@ -1,0 +1,24 @@
+{% extends "mendelod.html" %}
+
+{% block navbar %}
+<!-- <div class="navbar navbar-fixed-top">
+
+</div> -->
+{% endblock %}
+
+{% block container %}
+  <div class="row">
+    <div class="col-md-offset-3 col-md-6">
+      <div class='page-header'>
+        <h1>Authorized</h1>
+      </div>
+      <p>Copy the following string to the end of the <code>config.yml</code> file in the root directory of the MendeLOD web application.</p>
+      <pre>
+{{ token }}
+      </pre>
+      <p class='text-center'><a class="btn btn-primary" href="/reload">Continue</a></p>
+      
+    </div>
+  </div>
+  
+{% endblock %}

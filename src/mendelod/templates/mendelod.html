@@ -1,0 +1,33 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}MendeLOD{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+  <div class='container'>
+      {% block container %}
+      
+      {% endblock %}
+  </div>
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<!-- <link rel="stylesheet"
+      href="{{url_for('.static', filename='bootstrap.min.css')}}"> -->
+
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+
+h1,h2,h3,h5 {
+  font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;;
+}
+</style>
+
+
+      
+{% endblock %}

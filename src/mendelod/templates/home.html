@@ -1,0 +1,22 @@
+{% extends "mendelod.html" %}
+
+{% block navbar %}
+<!-- <div class="navbar navbar-fixed-top">
+
+</div> -->
+{% endblock %}
+
+{% block container %}
+  <div class="row">
+    <div class="col-md-offset-4 col-md-4">
+      <div class='text-center page-header'>
+        <h1>MendeLOD</h1>
+      </div>
+      <p class='text-center'>You need to authorize MendeLOD for accessing your Mendeley profile. Please use the button below to login and retrieve a security token. We'll only <strong>read</strong> information.</p>
+      <p class='text-center'><a class='btn btn-primary' href="{{login_url}}">Login to Mendeley</a></p>
+    </div>
+  </div>
+  
+{% endblock %}
+
+

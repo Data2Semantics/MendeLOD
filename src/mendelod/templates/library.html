@@ -1,0 +1,167 @@
+{% extends "mendelod.html" %}
+
+{% block styles %}
+{{super()}}
+<style>
+/*body {
+  font: 10px sans-serif;
+}*/
+
+.axis {
+  font: 8px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.area {
+  fill: steelblue;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script src="http://d3js.org/d3.v3.js"></script>
+<script>
+
+var data = [{% for year in docs|groupby('year')|sort(True) %}
+        {'year': '1-Jan-{{ year.grouper }}', 'publications': {{ year.list|length }}}{% if not loop.last %},{% endif%}{% endfor %}];
+
+
+var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = 320 - margin.left - margin.right,
+    height = 170 - margin.top - margin.bottom;
+
+var parseDate = d3.time.format("%d-%b-%Y").parse;
+
+var x = d3.time.scale()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var area = d3.svg.area()
+    .x(function(d) { return x(d.date); })
+    .y0(height)
+    .y1(function(d) { return y(d.publications); });
+
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// d3.tsv("data.tsv", function(error, data) {
+  data.forEach(function(d) {
+    d.date = parseDate(d.year);
+  });
+
+  x.domain(d3.extent(data, function(d) { return d.date; }));
+  y.domain([0, d3.max(data, function(d) { return d.publications; })]);
+
+  svg.append("path")
+      .datum(data)
+      .attr("class", "area")
+      .attr("d", area);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Number of publications");
+// });
+
+</script>
+{% endblock %}
+
+{% block navbar %}
+<!-- <div class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class='container-fluid'>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mendelod-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">MendeLOD</a>
+    </div>
+    <div class="collapse navbar-collapse" id="mendelod-navbar-collapse-1">
+      <form class="navbar-form navbar-left" role="search" action="/metadataLookup" method="GET">
+        <div class="form-group">
+          <input class="form-control" placeholder="DOI Lookup" type="text" name="doi">
+        </div>
+        <input class="btn btn-default" type="submit">
+      </form>
+    </div>
+  </div>
+
+</div> -->
+{% endblock %}
+
+{% block container %}
+  <div class="row" style="margin-top: 5em;">
+    <!-- <div class="col-md-8">
+      <div class="page-header">
+          <h2>{{name}}</h2>
+      </div>
+    </div> -->
+    <div class="col-md-4 col-md-offset-2"><div id='chart'></div></div>
+  </div>
+  {% for year in docs|groupby('year')|sort(True) %}
+    <div class="row">
+      <div class="col-md-2">
+        <h3>{{ year.grouper }}<br/><small>{{ year.list|length }} publications</small></h3>
+      </div>
+      <div class="col-md-10">
+        {% for doc in year.list %}
+        <ul class="list-group">
+            <li class="list-group-item">
+              <strong>{{doc.title}}</strong> {% if doc.file_attached %}<a class='badge' href="/download?document_id={{ doc.id }}">Download</a>{% endif %} <br/>
+              {% if doc.authors %}
+             
+                {% for author in doc.authors %}
+                  {{ author.first_name }} {{ author.last_name }}{% if loop.last %}.{% else %},{% endif %}
+                {% endfor %}
+              {% endif %}
+              {% if doc.source %}
+                <i>{{ doc.source }}</i>,
+              {% endif %}
+              {{ year.grouper }}.
+              {% if doc.identifiers %}
+                <br/>
+                {% for key, value in doc.identifiers.iteritems() %}
+                  {{ key }}: {{ value }}
+                {% endfor %}
+              {% endif %}
+            </li>
+        </ul>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+
+  
+{% endblock %}

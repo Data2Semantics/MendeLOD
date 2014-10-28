@@ -1,0 +1,9 @@
+workers = 1
+worker_class = 'socketio.sgunicorn.GeventSocketIOWorker'
+bind = '0.0.0.0:5300'
+pidfile = '/tmp/gunicorn-mendelod.pid'
+debug = True
+loglevel = 'debug'
+errorlog = '/tmp/gunicorn_mendelod_error.log'
+accesslog = '/tmp/gunicorn_mendelod_access.log'
+daemon = False

@@ -1,6 +1,2 @@
 clientId: 1020 
 clientSecret: XqUvFDuZaAqRag5l
-token: {!!python/unicode 'access_token': !!python/unicode 'MSwxNDE0NTA4ODM1OTk3LDkxMTEwMSwxMDIwLGFsbCwsblY1OTJmRGFVMnp2djNPYUFmVWNvWngxeEhj',
-  !!python/unicode 'expires_at': 1414508845.308727, !!python/unicode 'expires_in': 3600,
-  !!python/unicode 'refresh_token': !!python/unicode 'MSw5MTExMDEsMTAyMCxhbGwseGpHdi1FMEZQZ2w1QURVVi1UVjFqSmkzSTlJ',
-  !!python/unicode 'token_type': !!python/unicode 'bearer'}

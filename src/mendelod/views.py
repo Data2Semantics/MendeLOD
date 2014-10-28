@@ -1,4 +1,4 @@
-from mendelod import app, mendeley, MendeleySession
+from mendelod import app, cache, mendeley, MendeleySession
 from flask import Flask, redirect, render_template, request, session
 
 import yaml
@@ -47,6 +47,7 @@ def auth_return():
 
 
 @app.route('/listDocuments')
+@cache.cached(timeout=86400)
 def list_documents():
     if 'token' not in app.config:
         return redirect('/')

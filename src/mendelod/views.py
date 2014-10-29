@@ -47,7 +47,7 @@ def auth_return():
 
 
 @app.route('/listDocuments')
-@cache.cached(timeout=86400)
+@cache.cached(timeout=3600)
 def list_documents():
     if 'token' not in app.config:
         return redirect('/')
